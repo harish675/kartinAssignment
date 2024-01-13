@@ -43,3 +43,31 @@ module.exports.createUser = async function(req,res){
      }
 
 }
+
+//create session.
+module.exports.createSession = function (req,res){
+       
+     console.log("user signed successfully");
+
+     const user = req.user;
+     return res.status(200).json({
+        
+         message:"User login successfully",
+         data:user
+     })
+
+}
+
+//destroy session 
+
+module.exports.destroySession = function(req,res){
+    
+     req.logout(function(err){
+         
+          if(err){
+             return next(err);
+          }
+           return redirect('/');
+     })
+
+}
