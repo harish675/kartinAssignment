@@ -71,3 +71,14 @@ module.exports.destroySession = function(req,res){
      })
 
 }
+
+//user profile 
+
+module.exports.profilePage = function(req,res){
+    
+       
+    res.render('profile',{
+        title:'Profile'
+    });
+
+}

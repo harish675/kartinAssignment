@@ -9,5 +9,7 @@ router.post('/login',passport.authenticate(
     {failureRedirect :'back'},
 ),userController.createSession);
 
+router.get('/profile',userController.profilePage);
+
 
 module.exports = router;
