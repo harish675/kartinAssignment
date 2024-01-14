@@ -1,4 +1,3 @@
-
 const express = require('express');
 const port = 8000;
 const app = express();
@@ -12,34 +11,35 @@ const passportLocal = require('./config/passport_local');
 app.use(express.static('./assets'));
 app.use(expressLayouts);
 
-app.set('layout extractStyles',true);
-app.set('layout extractScript',true);
+app.set('layout extractStyles', true);
+app.set('layout extractScript', true);
 
-//set the view engine
-app.set('view engine','ejs');
-app.set('views','./views');
+// set the view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
 app.use(session({
-       name:'something',
-       secret:'donothing',
-       saveUninitialized:false,
-       resave:false,
-       cookie:{
-             maxAge:(1000*60*100)
-       }
-}))
+  name: 'something',
+  secret: 'donothing',
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: (1000 * 60 * 100)
+  }
+}));
 
-app.use(express.urlencoded());
+// Add this middleware to handle JSON data
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true })); // Specify extended option explicitly
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/',require('./routes'));
+app.use('/', require('./routes'));
 
+app.listen(port, function (err) {
+  if (err) {
+    console.log("Error in running the server", err);
+  }
 
-app.listen(port , function(err){
-     
-      if(err){
-         console.log("Error in the running the server",err);
-      }
-
-      console.log('Server is running successfully on port', port);
-})
+  console.log('Server is running successfully on port', port);
+});

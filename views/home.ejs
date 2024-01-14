@@ -1,1 +1,121 @@
 
+ <style>
+       body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+        }
+
+        #login-container {
+            background-color: #fff;
+            width: 400px;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #login, #register {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin: 8px 0;
+        }
+
+        input {
+            padding: 5px;
+            margin-bottom: 0px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        p {
+            color: #666;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        p:hover {
+            text-decoration: underline;
+        }
+
+        #register {
+            display: none;
+        }
+ </style>
+<div id="login-container">
+    <div id="login">
+        <h1>User Login</h1>
+        <form action="/user/login" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="emailLogin" placeholder="Email" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="passwordLogin" placeholder="Password" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+        <p onclick="toggleForm()">Don't have an account? Sign Up</p>
+    </div>
+
+    <div id="register">
+        <h1>User Register</h1>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p onclick="toggleForm()">Already have an account? Login</p>
+    </div>
+</div>
+
+<script>
+    function toggleForm() {
+        var loginForm = document.getElementById("login");
+        var registerForm = document.getElementById("register");
+
+        if (loginForm.style.display === "none") {
+            loginForm.style.display = "block";
+            registerForm.style.display = "none";
+        } else {
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+        }
+    }
+</script>
+

@@ -10,6 +10,8 @@ router.post('/login',passport.authenticate(
 ),userController.createSession);
 
 router.get('/profile',userController.profilePage);
+router.post('/:id/schedule',userController.scheduleReminder);
+router.get('/:id/reminders', userController.getReminders);
 
 
 module.exports = router;

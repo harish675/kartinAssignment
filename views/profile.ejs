@@ -1,16 +1,169 @@
+<style>
+   body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f8f8;
+  margin: 20px;
+}
 
-<div id="profile-container">
+h1, h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
 
-       
+#scheduleForm {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
 
-    <div id="scheduleButtons">
-       
-         <button onclick="scheduleReminder('exercise')">Schedule Exercise</button>
-         <button onclick="scheduleReminder('breakfast')">Schedule Breakfast</button>
-         <button onclick="scheduleReminder('lunch')">Schedule Lunch</button>
-         <button onclick="scheduleReminder('dinner')">Schedule Dinner</button>
-         <button onclick="scheduleReminder('meditation')">Schedule Meditation</button>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 15px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #217dbb;
+}
+
+input[type="time"] {
+  font-size: 16px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+#responseMessage {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+/* Additional styles for better readability */
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+
+  #scheduleForm {
+    padding: 15px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  input[type="time"] {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+</style>
+<div> 
+  <h1><%= user.id %></h1>
+  <h1 id="reminderHeading">Schedule Reminder</h1>
+  <form id="scheduleForm">
+    <input type="hidden" id="userId" value="<%= user.id %>">
+    
+    <div id="scheduleTypeButtons">
+      <label>Schedule Type:</label>
+      <button type="button" onclick="setScheduleType('exerciseTime')">Exercise Time</button>
+      <button type="button" onclick="setScheduleType('breakfastTime')">Breakfast Time</button>
+      <button type="button" onclick="setScheduleType('lunchTime')">Lunch Time</button>
+      <button type="button" onclick="setScheduleType('dinnerTime')">Dinner Time</button>
+      <button type="button" onclick="setScheduleType('meditationTime')">Meditation Time</button>
     </div>
 
+    <div id="timeInput" style="display: none;">
+      <h2 id="selectedScheduleHeading"></h2> <!-- Added heading to display the selected schedule type -->
+      <label for="newScheduleTime">New Schedule Time:</label>
+      <input type="time" id="newScheduleTime" name="newScheduleTime" required>
+      <br>
+      <button type="button" onclick="scheduleReminder()">Schedule Reminder</button>
+    </div>
+  </form>
+
+  <div id="responseMessage"></div>
+
+  <script>
+    let currentScheduleType = '';
+    
+    function setScheduleType(scheduleType) {
+      currentScheduleType = scheduleType;
+
+      // Hide all schedule type buttons
+      document.getElementById("scheduleTypeButtons").style.display = "none";
+
+      // Display the time input when a schedule type is selected
+      const timeInput = document.getElementById("timeInput");
+      timeInput.style.display = "block";
+
+      // Update the heading to show the selected schedule type
+      document.getElementById("selectedScheduleHeading").innerText = `Setting Reminder for ${scheduleType}`;
+      
+      // Clear previous response message
+      document.getElementById("responseMessage").innerText = '';
+    }
+
+    async function scheduleReminder() {
+      const userId = document.getElementById("userId").value;
+      const newScheduleTime = document.getElementById("newScheduleTime").value;
+
+      if (!currentScheduleType || !newScheduleTime) {
+        document.getElementById("responseMessage").innerText = 'Please select a schedule type and set a time.';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/user/${userId}/schedule`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ scheduleType: currentScheduleType, newScheduleTime }),
+        });
+
+        const responseData = await response.json();
+
+        // Display the response message
+        document.getElementById("responseMessage").innerText = responseData.message;
+
+        // You can also update your UI with the updated user profile if needed
+        console.log('Updated User Profile:', responseData.user);
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById("responseMessage").innerText = 'An error occurred. Please try again.';
+      }
+    }
+  </script>
 </div>

@@ -2,6 +2,8 @@
 module.exports.homePage = function(req,res){
      
 
-      return res.send("<h1>this controller is working</h1>")
+     return res.render('home',{
+          title:'Home'
+     })
 
 }
